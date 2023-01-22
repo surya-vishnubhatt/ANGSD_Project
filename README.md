@@ -1,3 +1,3 @@
 # ANGSD
 Repo for Analysis of Next Generation Sequencing Data course <br />
-Will be updated pending further assignments
+Will be updated pending future assignments
