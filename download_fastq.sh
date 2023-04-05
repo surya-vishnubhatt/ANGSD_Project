@@ -21,6 +21,12 @@ do
     # Define the SRA accession number
     accession="SRR${i}"
 
+    # Create a folder with the accession number if it doesn't already exist
+    if [ ! -d "$accession" ]
+    then
+        mkdir "$accession"
+    fi
+
     # Run fastq-dump on the accession number and put the output in the folder with the same name
     fastq-dump --split-files "$accession" -O "$accession"
 done
