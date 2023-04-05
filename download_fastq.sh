@@ -8,7 +8,7 @@
 #SBATCH --mem=32G
 
 mamba activate angsd 
-cd /athena/angsd/scratch/spv4002/PROJECT
+cd /athena/angsd/scratch/spv4002
 
 #The range of A79V polyA data had to be found manually using ERA
 #Range: SRR21190766 --> SRR21190775
