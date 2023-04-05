@@ -8,7 +8,7 @@
 #SBATCH --mem=32G
 
 mamba activate angsd 
-cd /athena/angsd/scratch/spv4002/PROJECT
+cd /athena/angsd/scratch/spv4002
 
 
 # Set the path to the reference genome index
