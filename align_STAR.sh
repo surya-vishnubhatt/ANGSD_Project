@@ -27,8 +27,10 @@ do
     STAR --runMode alignReads\
         --runThreadN 4 \
         --genomeDir "$REF" \
-        --readFilesIn "$accession/${accession}_1.fastq.gz" "$accession/${accession}_2.fastq.gz" \
+        --readFilesIn "$accession/${accession}_1.fastq" "$accession/${accession}_2.fastq" \
         --readFilesCommand zcat \
-        --outFileNamePrefix "${accession}/${accession}_" \
+        --outFileNamePrefix "${accession}/${accession}." \
         --outSAMtype BAM SortedByCoordinate  ;
+
+    samtools index /athena/angsd/scratch/spv4002/${accession}/${accession}.Aligned.sortedByCoord.out.bam 
 done
