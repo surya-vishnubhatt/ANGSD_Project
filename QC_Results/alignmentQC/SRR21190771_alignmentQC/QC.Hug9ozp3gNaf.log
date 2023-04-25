@@ -1,0 +1,475 @@
+Starting QoRTs v1.3.6 (Compiled Tue Sep 25 11:21:46 EDT 2018)
+Starting time: (Sat Apr 22 05:37:41 EDT 2023)
+INPUT_COMMAND(QC)
+  INPUT_ARG(infile)=/athena/angsd/scratch/spv4002/SRR21190771/SRR21190771.Aligned.sortedByCoord.out.bam
+  INPUT_ARG(gtffile)=/athena/angsd/scratch/spv4002/hg38/hg38.ncbiRefSeq.gtf
+  INPUT_ARG(outdir)=/athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC
+  INPUT_ARG(generatePlots)=true
+  INPUT_ARG(stranded)=true
+Created Log File: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC/QC.Hug9ozp3gNaf.log
+Starting QC
+[Time: 2023-04-22 05:37:41] [Mem usage: [38MB / 1107MB]] [Elapsed Time: 00:00:00.0001]
+QoRTs is Running in paired-end mode.
+QoRTs is Running in any-sorted mode.
+No parameter --genomeFA found.
+NOTE: Function "overlapMatch" requires function "mismatchEngine". Adding "mismatchEngine" to the active function list...
+Running functions: CigarOpDistribution, GCDistribution, GeneCalcs, InsertSize, 
+        JunctionCalcs, NVC, QualityScoreDistribution, StrandCheck, 
+        chromCounts, cigarLocusCounts, mismatchEngine, overlapMatch, 
+        readLengthDistro, writeBiotypeCounts, writeClippedNVC, 
+        writeDESeq, writeDEXSeq, writeGeneBody, writeGeneCounts, 
+        writeGenewiseGeneBody, writeJunctionSeqCounts, 
+        writeKnownSplices, writeNovelSplices, writeSpliceExon
+Checking first 10000 reads. Checking SAM file for formatting errors...
+   Stats on the first 10000 reads:
+        Num Reads Primary Map:    3298
+        Num Reads Paired-ended:   10000
+        Num Reads mapped pair:    3298
+        Num Pair names found:     1656
+        Num Pairs matched:        1642
+        Read Seq length:          100 to 100
+        Unclipped Read length:    100 to 100
+        Final maxReadLength:      100
+        maxPhredScore:            38
+        minPhredScore:            0
+   Note: Data appears to be paired-ended.
+   Sorting Note: Reads are not sorted by name (This is OK).
+   Sorting Note: Reads are sorted by position (This is OK).
+Done checking first 10000 reads. No major problems detected!
+SAMRecord Reader Generated. Read length: 100.
+[Time: 2023-04-22 05:37:44] [Mem usage: [438MB / 1862MB]] [Elapsed Time: 00:00:03.0100]
+> Init GeneCalcs Utility
+> Init InsertSize Utility
+Compiling flat feature annotation, internally in memory...
+FlatteningGtf: starting...(2023-04-22 05:38:35)
+    FlatteningGtf: gtf file read complete.(2023-04-22 05:39:23)
+    FlatteningGtf: Splice Junction Map read.(2023-04-22 05:39:25)
+    FlatteningGtf: gene Sets generated.(2023-04-22 05:39:27)
+    FlatteningGtf: Aggregate Sets built.
+    FlatteningGtf: Compiling Aggregate Info . . . (2023-04-22 05:39:27)
+    FlatteningGtf: Finished Compiling Aggregate Info. (2023-04-22 05:39:27)
+    FlatteningGtf: Iterating through the step-vector...(2023-04-22 05:39:27)
+    FlatteningGtf: Adding the aggregate genes themselves...(2023-04-22 05:39:30)
+    FlatteningGtf: Iterating through the splice junctions...(2023-04-22 05:39:31)
+    FlatteningGtf: Sorting the aggregate genes...(2023-04-22 05:39:34)
+    FlatteningGtf: Folding the FlatGtfLine iterator...(2023-04-22 05:39:34)
+    FlatteningGtf: Features Built.(2023-04-22 05:39:34)
+Internal flat feature annotation compiled!
+> Init NVC utility
+> Init CigarOpDistribution Utility
+> Init QualityScoreDistribution Utility
+> Init GC counts Utility
+> Init JunctionCalcs utility
+length of knownSpliceMap after instantiation: 380433
+length of knownCountMap after instantiation: 380433
+> Init StrandCheck Utility
+> Init chromCount Utility
+> Init qcCigarLocusCounts Utility
+> Init OverlapMatch Utility
+> Init MinorUtils Utility
+QC Utilities Generated!
+[Time: 2023-04-22 05:39:38] [Mem usage: [2036MB / 15GB]] [Elapsed Time: 00:01:57.0712]
+helper_calculateGeneAssignmentMap_strict. Found: 59251 genes in the supplied annotation.
+helper_calculateGeneAssignmentMap_strict. Found: 3736 genes with ambiguous segments.
+helper_calculateGeneAssignmentMap_strict. Found: 55515 genes after first-pass filtering
+making makeGeneIntervalMap for geneBody calculations. Found: 51523 acceptable genes for gene-body analysis.
+..........[1000000 Read-Pairs processed] [Time: 2023-04-22 05:42:15] 
+..........[2000000 Read-Pairs processed] [Time: 2023-04-22 05:44:03] 
+..........[3000000 Read-Pairs processed] [Time: 2023-04-22 05:45:54] 
+..........[4000000 Read-Pairs processed] [Time: 2023-04-22 05:47:44] 
+..........[5000000 Read-Pairs processed] [Time: 2023-04-22 05:49:38] 
+..........[6000000 Read-Pairs processed] [Time: 2023-04-22 05:51:30] 
+..........[7000000 Read-Pairs processed] [Time: 2023-04-22 05:53:23] 
+..........[8000000 Read-Pairs processed] [Time: 2023-04-22 05:55:13] 
+..........[9000000 Read-Pairs processed] [Time: 2023-04-22 05:57:01] 
+..........[10000000 Read-Pairs processed] [Time: 2023-04-22 05:58:49] 
+..........[11000000 Read-Pairs processed] [Time: 2023-04-22 06:00:37] 
+..........[12000000 Read-Pairs processed] [Time: 2023-04-22 06:02:27] 
+..........[13000000 Read-Pairs processed] [Time: 2023-04-22 06:04:21] 
+..........[14000000 Read-Pairs processed] [Time: 2023-04-22 06:06:13] 
+..........[15000000 Read-Pairs processed] [Time: 2023-04-22 06:08:04] 
+..........[16000000 Read-Pairs processed] [Time: 2023-04-22 06:09:57] 
+..........[17000000 Read-Pairs processed] [Time: 2023-04-22 06:11:42] 
+..........[18000000 Read-Pairs processed] [Time: 2023-04-22 06:13:28] 
+..........[19000000 Read-Pairs processed] [Time: 2023-04-22 06:15:20] 
+..........[20000000 Read-Pairs processed] [Time: 2023-04-22 06:17:13] 
+..........[21000000 Read-Pairs processed] [Time: 2023-04-22 06:19:03] 
+..........[22000000 Read-Pairs processed] [Time: 2023-04-22 06:20:55] 
+..........[23000000 Read-Pairs processed] [Time: 2023-04-22 06:22:41] 
+..........[24000000 Read-Pairs processed] [Time: 2023-04-22 06:24:31] 
+..........[25000000 Read-Pairs processed] [Time: 2023-04-22 06:26:16] 
+..........[26000000 Read-Pairs processed] [Time: 2023-04-22 06:28:09] 
+..........[27000000 Read-Pairs processed] [Time: 2023-04-22 06:30:00] 
+..........[28000000 Read-Pairs processed] [Time: 2023-04-22 06:31:13] 
+..........[29000000 Read-Pairs processed] [Time: 2023-04-22 06:33:00] 
+......
+Finished reading SAM. Read: 29659652 reads/read-pairs.
+Finished reading SAM. Used: 28209082 reads/read-pairs.
+[Time: 2023-04-22 06:34:11] [Mem usage: [10GB / 16GB]] [Elapsed Time: 00:56:30.0591]
+> Read Stats:
+>   READ_PAIR_OK                   28209082
+>   TOTAL_READ_PAIRS               29659652
+>   DROPPED_NOT_PROPER_PAIR        0
+>   DROPPED_READ_FAILS_VENDOR_QC   0
+>   DROPPED_MARKED_NOT_VALID       0
+>   DROPPED_CHROMS_MISMATCH        0
+>   DROPPED_PAIR_STRANDS_MISMATCH  0
+>   DROPPED_IGNORED_CHROMOSOME     0
+>   DROPPED_NOT_UNIQUE_ALIGNMENT   1450570
+>   DROPPED_NO_ALN_BLOCKS   0
+>   DROPPED_NOT_MARKED_RG   -1
+Pre-alignment read count unknown (Set --seqReadCt or --rawfastq)
+Writing Output...
+DEBUG NOTE: IncludeGenesSet.size: 51523
+DEBUG NOTE: sortedReadCountSeq.size: 24392
+DEBUG NOTE: coverageThresholds: 12196;18294;21952;24392
+DEBUG NOTE: coverageSpans: [(0,12196);(12196,18294);(18294,21952);(21952,24392)]
+DEBUG NOTE:	[1.bottomHalf][0.5] = [0,12196]
+DEBUG NOTE:	[2.upperMidQuartile][0.75] = [12196,18294]
+DEBUG NOTE:	[3.75to90][0.9] = [18294,21952]
+DEBUG NOTE:	[4.high][1.0] = [21952,24392]
+      (DEBUG) Generating Biotype Map [2023-04-22 06:34:14]
+      (DEBUG) Extracted gene BioType using key "gene_biotype".
+              Found 0 types: []
+      (DEBUG) Finished Biotype Map [2023-04-22 06:34:54]
+length of knownCountMap after run: 380433
+QoRTs QC complete with no problems.
+Generating plots...
+Creating Directory: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC/QCplots
+Successfully Created Directory: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC/QCplots
+ > Starting R execution. (generating plots)
+   > STARTING...
+   > Untitled/athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC/UntitledUNKNOWNUNKNOWN
+   > charactercharactercharactercharactercharactercharacter
+   > Note: no input.read.pair.count column found. This column is optional, but without it mapping rates cannot be calculated.
+   > Note: no multi.mapped.read.pair.count column found. This column is optional, but without it (depending on how your aligner implements multi-mapping) multi-mapping rates might not be plotted.
+   > WARNING: QoRTs run may be incomplete! File not found: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC//QC.QORTS_COMPLETED_OK!
+   > infile.dir = 
+   > scalaqc_file = QC.summary.txt.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0.01 secs]
+   > Autodetected Paired-End mode.
+   > (File 1 of 43): QC.gc.byPair.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 2 of 43): QC.gc.byRead.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 3 of 43): QC.gc.byRead.vsBaseCt.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0.01 secs]
+   > (File 4 of 43): QC.quals.r1.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 5 of 43): QC.quals.r2.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 6 of 43): QC.cigarOpDistribution.byReadCycle.R1.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 7 of 43): QC.cigarOpDistribution.byReadCycle.R2.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 8 of 43): QC.cigarOpLengths.byOp.R1.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0.04 secs]
+   > (File 9 of 43): QC.cigarOpLengths.byOp.R2.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0.02 secs]
+   > (File 10 of 43): QC.geneBodyCoverage.by.expression.level.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 11 of 43): QC.geneCounts.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0.06 secs]
+   > (File 12 of 43): QC.insert.size.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0.01 secs]
+   > (File 13 of 43): QC.NVC.raw.R1.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 14 of 43): QC.NVC.raw.R2.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 15 of 43): QC.NVC.lead.clip.R1.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0.02 secs]
+   > (File 16 of 43): QC.NVC.lead.clip.R2.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0.01 secs]
+   > (File 17 of 43): QC.NVC.tail.clip.R1.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0.01 secs]
+   > (File 18 of 43): QC.NVC.tail.clip.R2.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0.01 secs]
+   > (File 19 of 43): QC.NVC.minus.clipping.R1.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 20 of 43): QC.NVC.minus.clipping.R2.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 21 of 43): QC.chromCount.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 22 of 43): QC.biotypeCounts.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 23 of 43): QC.geneBodyCoverage.byExpr.avgPct.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 24 of 43): QC.overlapCoverage.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 25 of 43): QC.overlapMismatch.byRead.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 26 of 43): QC.overlapMismatch.byScore.txt.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 27 of 43): QC.overlapMismatch.byBase.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 28 of 43): QC.overlapMismatch.byScoreAndBP.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0.03 secs]
+   > (File 29 of 43): QC.readLenDist.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 30 of 43): QC.referenceMismatchCounts.txt.gzFailed: Cannot find file: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC//QC.referenceMismatchCounts.txt.gz. Skipping tests that use this data.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 31 of 43): QC.referenceMismatchRaw.byReadStrand.txtFailed: Cannot find file: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC//QC.referenceMismatchRaw.byReadStrand.txt. Skipping tests that use this data.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 32 of 43): QC.referenceMismatch.byScore.txtFailed: Cannot find file: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC//QC.referenceMismatch.byScore.txt. Skipping tests that use this data.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 33 of 43): QC.referenceMismatch.byScoreAndBP.txtFailed: Cannot find file: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC//QC.referenceMismatch.byScoreAndBP.txt. Skipping tests that use this data.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 34 of 43): QC.mismatchSizeRates.txt.gz.done.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 35 of 43): QC.FQ.gc.byRead.txt.gzFailed: Cannot find file: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC//QC.FQ.gc.byRead.txt.gz. Skipping tests that use this data.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 36 of 43): QC.FQ.gc.byPair.txt.gzFailed: Cannot find file: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC//QC.FQ.gc.byPair.txt.gz. Skipping tests that use this data.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 37 of 43): QC.FQ.gc.R1.txt.gzFailed: Cannot find file: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC//QC.FQ.gc.R1.txt.gz. Skipping tests that use this data.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 38 of 43): QC.FQ.gc.R2.txt.gzFailed: Cannot find file: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC//QC.FQ.gc.R2.txt.gz. Skipping tests that use this data.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 39 of 43): QC.FQ.NVC.R1.txt.gzFailed: Cannot find file: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC//QC.FQ.NVC.R1.txt.gz. Skipping tests that use this data.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 40 of 43): QC.FQ.NVC.R2.txt.gzFailed: Cannot find file: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC//QC.FQ.NVC.R2.txt.gz. Skipping tests that use this data.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 41 of 43): QC.FQ.quals.r1.txt.gzFailed: Cannot find file: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC//QC.FQ.quals.r1.txt.gz. Skipping tests that use this data.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 42 of 43): QC.FQ.quals.r2.txt.gzFailed: Cannot find file: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC//QC.FQ.quals.r2.txt.gz. Skipping tests that use this data.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > (File 43 of 43): QC.FQ.readLenDist.txt.gzFailed: Cannot find file: /athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQC//QC.FQ.readLenDist.txt.gz. Skipping tests that use this data.
+   >    [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > calculating secondary data:
+   > Calculating Quality Score Rates...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > Calculating cumulative gene coverage, by replicate...done. [time: 2023-04-22 06:35:01],[elapsed: 0.01 secs]
+   > Calculating cumulative gene coverage, by sample...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > Calculating Mapping Rates...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > calculating normalization factors, by sample...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > calculating normalization factors, by replicate...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > calculating normalization factors, by sample/replicate...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > Calculating summary stats...done. [time: 2023-04-22 06:35:01],[elapsed: 0.01 secs]
+   > Calculating overlap mismatch-size rates...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > Calculating cumulative overlap mismatch-size rates...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > Calculating overlap coverage Rates...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > Calculating overlap coverage Rates By Read...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > Calculating read length distribution...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > Calculating overlap by AVG score...done. [time: 2023-04-22 06:35:01],[elapsed: 0.01 secs]
+   > Calculating overlap by MIN score...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > Adding Min score error to summary tables...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > Calculating overlap by R1 score...done. [time: 2023-04-22 06:35:01],[elapsed: 0.01 secs]
+   > Calculating overlap by R2 score...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > Calculating summary table...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > Calculating overlap mismatch combos...Calculating mismatch combo rates:...done. [time: 2023-04-22 06:35:01],[elapsed: 0 secs]
+   > Calculating overlapMismatch.byScoreAndBP stats...done. [time: 2023-04-22 06:35:02],[elapsed: 0.55 secs]
+   > done. [time: 2023-04-22 06:35:02],[elapsed: 0.56 secs]
+   > Calculating NVC rates...done. [time: 2023-04-22 06:35:02],[elapsed: 0.05 secs]
+   > done.
+   > [time: 2023-04-22 06:35:02],[elapsed: 0.69 secs]
+   > Skipping: "onTarget.rates","onTarget.counts","overlap.mismatch.byAvgQual"
+   > Rasterize large plots: FALSE
+   > Rasterize medium plots: FALSE
+   > Skipping due to missing data: "referenceMismatch.byCycle","referenceMismatch.byScore","referenceMismatch.byBase","referenceMismatch.byBase.atScore.R1","referenceMismatch.byBase.atScore.R2","mapping.rates","norm.factors","norm.vs.TC"
+   > Plotting extended...
+   > Starting compiled plot...
+   > Starting: Minimum plot.
+   > Finished: Minimum Phred Quality Score plot.[time: 2023-04-22 06:35:03],[elapsed: 0.05 secs]
+   > Starting: Lower Quartile plot.
+   > Finished: Lower Quartile Phred Quality Score plot.[time: 2023-04-22 06:35:03],[elapsed: 0.03 secs]
+   > Starting: Median plot.
+   > Finished: Median Phred Quality Score plot.[time: 2023-04-22 06:35:03],[elapsed: 0.03 secs]
+   > Starting: Upper Quartile plot.
+   > Finished: Upper Quartile Phred Quality Score plot.[time: 2023-04-22 06:35:03],[elapsed: 0.02 secs]
+   > Starting: Maximum plot.
+   > Finished: Maximum Phred Quality Score plot.[time: 2023-04-22 06:35:03],[elapsed: 0.03 secs]
+   > Starting: Alignment Clipping Rate, by read cycle plot.
+   > Finished: Alignment Clipping Rate, by read cycle plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Deletion Rate, by read cycle plot.
+   > Finished: Deletion Rate, by read cycle plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Insertion Rate, by read cycle plot.
+   > Finished: Insertion Rate, by read cycle plot.[time: 2023-04-22 06:35:03],[elapsed: 0.05 secs]
+   > Starting: Splice Junction Rate, by read cycle plot.
+   > Finished: Splice Junction Rate, by read cycle plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Insertion Length Distribution plot.
+   > Finished: Insertion Length Distribution plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Deletion Length Distribution plot.
+   > Finished: Deletion Length Distribution plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: GC Content plot.
+   > Finished: GC Content plot.[time: 2023-04-22 06:35:03],[elapsed: 0 secs]
+   > Starting: Missingness Rate, by read cycle plot.
+   > Finished: Missingness Rate, by read cycle plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Dropped Rates plot.
+   > Finished: Dropped Rates plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Insert Size plot.
+   > Finished: Insert Size plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Overlap Coverage plot.
+   > Finished: Overlap Coverage plot.[time: 2023-04-22 06:35:03],[elapsed: 0 secs]
+   > Starting: Read Length Distribution plot.
+   > Finished: Read Length Distribution plot.[time: 2023-04-22 06:35:03],[elapsed: 0 secs]
+   > Starting: Overlap Mismatch by Read Cycle plot.
+   > Finished: Overlap Mismatch by Read Cycle plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Overlapping Mismatch by Min Qual plot.
+   > Finished: Overlapping Mismatch by Min Qual plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Overlap Mismatch by Read Qual plot.
+   > Finished: Overlap Mismatch by Read Qual plot.[time: 2023-04-22 06:35:03],[elapsed: 0 secs]
+   > Starting: Overlap Mismatch Combinations plot.
+   > Finished: Overlap Mismatch Combinations plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Overlap Mismatch Size Frequency plot.
+   > Finished: Overlap Mismatch Size Frequency plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Overlap Mismatch Pairs At Phred == 41 plot.
+   > Finished: Overlap Mismatch Pairs At Phred == 41 plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Cumulative Gene Assignment Diversity plot.
+   > Finished: Cumulative Gene Assignment Diversity plot.[time: 2023-04-22 06:35:03],[elapsed: 0.02 secs]
+   > Starting: Gene-Body Coverage plot.
+   > Finished: Gene-Body Coverage plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Gene-Body Coverage, Upper Middle Quartile Genes plot.
+   > Finished: Gene-Body Coverage, Upper Middle Quartile Genes plot.[time: 2023-04-22 06:35:03],[elapsed: 0 secs]
+   > Starting: Gene-Body Coverage, Low Expression Genes plot.
+   > Finished: Gene-Body Coverage, Low Expression Genes plot.[time: 2023-04-22 06:35:03],[elapsed: 0 secs]
+   > Starting: Gene Assignment Rates plot.
+   > Finished: Gene Assignment Rates plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Splice Junction Loci Rates plot.
+   > Finished: Splice Junction Loci Rates plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Splice Junction Event Rates plot.
+   > Finished: Splice Junction Event Rates plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Splice Junction Event Rates plot.
+   > Finished: Splice Junction Event Rates plot.[time: 2023-04-22 06:35:03],[elapsed: 0 secs]
+   > Starting: Chromosome Rates plot.
+   > Finished: Chromosome Rates plot.[time: 2023-04-22 06:35:03],[elapsed: 0.1 secs]
+   > Starting: Strandedness Test plot.
+   > Finished: Strandedness Test plot.[time: 2023-04-22 06:35:03],[elapsed: 0 secs]
+   > Starting: Lead Clipping NVC plot.
+   > Finished: Lead Clipping NVC plot.[time: 2023-04-22 06:35:03],[elapsed: 0.01 secs]
+   > Starting: Tail Clipping NVC plot.
+   > Finished: Tail Clipping NVC plot.[time: 2023-04-22 06:35:03],[elapsed: 0.02 secs]
+   > Starting: NVC, Raw plot.
+   > Finished: NVC, Raw plot.[time: 2023-04-22 06:35:03],[elapsed: 0.02 secs]
+   > Starting: NVC, Aligned bases only plot.
+   > Finished: NVC, Aligned bases only plot.[time: 2023-04-22 06:35:03],[elapsed: 0.02 secs]
+   > Finished Multiplot[time: 2023-04-22 06:35:05],[elapsed: 3 secs]
+   > Done with plot.
+   > Skipping: "onTarget.rates","onTarget.counts","overlap.mismatch.byAvgQual"
+   > cannot open raster images, because package "png" not found. Install package png (with command install.packages("png")) or set rasterize.large.plots to FALSE!
+   > cannot open raster images, because package "png" not found. Install package png (with command install.packages("png")) or set rasterize.medium.plots to FALSE!
+   > Rasterize large plots: FALSE
+   > Rasterize medium plots: FALSE
+   > Skipping due to missing data: "referenceMismatch.byCycle","referenceMismatch.byScore","referenceMismatch.byBase","referenceMismatch.byBase.atScore.R1","referenceMismatch.byBase.atScore.R2","mapping.rates","norm.factors","norm.vs.TC"
+   > Plotting extended...
+   > Starting compiled plot...
+   > Starting: Minimum plot.
+   > Finished: Minimum Phred Quality Score plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Lower Quartile plot.
+   > Finished: Lower Quartile Phred Quality Score plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Median plot.
+   > Finished: Median Phred Quality Score plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Upper Quartile plot.
+   > Finished: Upper Quartile Phred Quality Score plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Maximum plot.
+   > Finished: Maximum Phred Quality Score plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   >   layoutCap = 6
+   >   layoutStart = 7
+   >   i = 7
+   > Starting: Alignment Clipping Rate, by read cycle plot.
+   > Finished: Alignment Clipping Rate, by read cycle plot.[time: 2023-04-22 06:35:05],[elapsed: 0.01 secs]
+   > Starting: Deletion Rate, by read cycle plot.
+   > Finished: Deletion Rate, by read cycle plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Insertion Rate, by read cycle plot.
+   > Finished: Insertion Rate, by read cycle plot.[time: 2023-04-22 06:35:05],[elapsed: 0.01 secs]
+   > Starting: Splice Junction Rate, by read cycle plot.
+   > Finished: Splice Junction Rate, by read cycle plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Insertion Length Distribution plot.
+   > Finished: Insertion Length Distribution plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Deletion Length Distribution plot.
+   > Finished: Deletion Length Distribution plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   >   layoutCap = 6
+   >   layoutStart = 13
+   >   i = 13
+   > Starting: GC Content plot.
+   > Finished: GC Content plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Missingness Rate, by read cycle plot.
+   > Finished: Missingness Rate, by read cycle plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Dropped Rates plot.
+   > Finished: Dropped Rates plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Insert Size plot.
+   > Finished: Insert Size plot.[time: 2023-04-22 06:35:05],[elapsed: 0.01 secs]
+   > Starting: Overlap Coverage plot.
+   > Finished: Overlap Coverage plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Read Length Distribution plot.
+   > Finished: Read Length Distribution plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   >   layoutCap = 6
+   >   layoutStart = 19
+   >   i = 19
+   > Starting: Overlap Mismatch by Read Cycle plot.
+   > Finished: Overlap Mismatch by Read Cycle plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Overlapping Mismatch by Min Qual plot.
+   > Finished: Overlapping Mismatch by Min Qual plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Overlap Mismatch by Read Qual plot.
+   > Finished: Overlap Mismatch by Read Qual plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Overlap Mismatch Combinations plot.
+   > Finished: Overlap Mismatch Combinations plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Overlap Mismatch Size Frequency plot.
+   > Finished: Overlap Mismatch Size Frequency plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Overlap Mismatch Pairs At Phred == 41 plot.
+   > Finished: Overlap Mismatch Pairs At Phred == 41 plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   >   layoutCap = 6
+   >   layoutStart = 25
+   >   i = 25
+   > Starting: Cumulative Gene Assignment Diversity plot.
+   > Finished: Cumulative Gene Assignment Diversity plot.[time: 2023-04-22 06:35:05],[elapsed: 0.06 secs]
+   > Starting: Gene-Body Coverage plot.
+   > Finished: Gene-Body Coverage plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Gene-Body Coverage, Upper Middle Quartile Genes plot.
+   > Finished: Gene-Body Coverage, Upper Middle Quartile Genes plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Gene-Body Coverage, Low Expression Genes plot.
+   > Finished: Gene-Body Coverage, Low Expression Genes plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Gene Assignment Rates plot.
+   > Finished: Gene Assignment Rates plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   > Starting: Splice Junction Loci Rates plot.
+   > Finished: Splice Junction Loci Rates plot.[time: 2023-04-22 06:35:05],[elapsed: 0 secs]
+   >   layoutCap = 6
+   >   layoutStart = 31
+   >   i = 31
+   > Starting: Splice Junction Event Rates plot.
+   > Finished: Splice Junction Event Rates plot.[time: 2023-04-22 06:35:06],[elapsed: 0.03 secs]
+   > Starting: Splice Junction Event Rates plot.
+   > Finished: Splice Junction Event Rates plot.[time: 2023-04-22 06:35:06],[elapsed: 0 secs]
+   > Starting: Chromosome Rates plot.
+   > Finished: Chromosome Rates plot.[time: 2023-04-22 06:35:06],[elapsed: 0.09 secs]
+   > Starting: Strandedness Test plot.
+   > Finished: Strandedness Test plot.[time: 2023-04-22 06:35:06],[elapsed: 0 secs]
+   > Starting: Lead Clipping NVC plot.
+   > Finished: Lead Clipping NVC plot.[time: 2023-04-22 06:35:06],[elapsed: 0.01 secs]
+   > Starting: Tail Clipping NVC plot.
+   > Finished: Tail Clipping NVC plot.[time: 2023-04-22 06:35:06],[elapsed: 0.01 secs]
+   >   layoutCap = 2
+   >   layoutStart = 37
+   >   i = 37
+   > Starting: NVC, Raw plot.
+   > Finished: NVC, Raw plot.[time: 2023-04-22 06:35:06],[elapsed: 0.01 secs]
+   > Starting: NVC, Aligned bases only plot.
+   > Finished: NVC, Aligned bases only plot.[time: 2023-04-22 06:35:06],[elapsed: 0.01 secs]
+   > Finished Multiplot[time: 2023-04-22 06:35:06],[elapsed: 0.39 secs]
+   > Done with plot.
+   > Warning messages:
+   > 1: In check.rasterize.or.warn("rasterize.large.plots") :
+   >   cannot open raster images, because package "png" not found. Install package png (with command install.packages("png")) or set rasterize.large.plots to FALSE!
+   > 2: In check.rasterize.or.warn("rasterize.medium.plots") :
+   >   cannot open raster images, because package "png" not found. Install package png (with command install.packages("png")) or set rasterize.medium.plots to FALSE!
+   > Skipping: "onTarget.rates","onTarget.counts","overlap.mismatch.byAvgQual"
+   > Rasterize large plots: FALSE
+   > Rasterize medium plots: FALSE
+   > Skipping due to missing data: "referenceMismatch.byCycle","referenceMismatch.byScore","referenceMismatch.byBase","referenceMismatch.byBase.atScore.R1","referenceMismatch.byBase.atScore.R2","mapping.rates","norm.factors","norm.vs.TC"
+   > Plotting extended...
+   > Starting compiled plot...
+   >     (Skipped legend box due to encountering errors)
+   >      Error:"Error in plot.new(): could not open file '/athena/angsd/scratch/spv4002/alignmentQC/SRR21190771_alignmentQCQCplots//plot-basic.legend.png'
+   > "
+   > PLOTTING ERROR: Error in text.default(devlim[1], devlim[4], corner.labels[i], cex = cex.corner.label, : plot.new has not been called yet
+   > 
+   > Done with plot.
+   > null device 
+   >           1 
+   > DONE...
+ > Finished R execution.
+Done.
+Time spent on setup:           00:01:57.0712
+Time spent on SAM iteration:   00:54:32.0880
+                               (1.8386369918747978 minutes per million read-pairs)
+                               (1.9331835517842564 minutes per million read-pairs used)
+Time spent on file output:     00:00:54.0326
+Total runtime:                 00:57:24.0918
+Done. (Sat Apr 22 06:35:06 EDT 2023)
