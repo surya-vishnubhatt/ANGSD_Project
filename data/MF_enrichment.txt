@@ -1,0 +1,7 @@
+"x"
+"1"	"extracellular matrix structural constituent"
+"2"	"extracellular matrix structural constituent conferring tensile strength"
+"3"	"glycosaminoglycan binding"
+"4"	"receptor ligand activity"
+"5"	"signaling receptor activator activity"
+"6"	"heparin binding"

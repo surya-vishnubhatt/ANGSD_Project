@@ -1,0 +1,326 @@
+---
+title: "Processing the FeatureCounts Data"
+author: "Surya Vishnubhatt"
+date: "2/26/23"
+output: html_document
+---
+
+```{r libs, message=FALSE}
+library(ggplot2)
+library(tidyverse)
+library(DESeq2)
+library(vsn)
+library(magrittr)
+library(pheatmap)
+library(EnhancedVolcano)
+library(clusterProfiler)
+library(org.Hs.eg.db) 
+```
+
+# Preliminary Analysis of featureCounts Result
+
+
+First, I was able to visualize the results from featureCounts by plotting the Assigned vs. Unassigned ratios as can be seen in Figure 2:
+
+```{r fig2, fig.cap = "**Figure 2:** *Preliminary Analysis of featureCounts Result*", fig.align = "center"}
+# Load required packages
+library(ggplot2)
+# Read in the summary files
+fc_summary <- read.table("~/Desktop/featurecounts_result/featureCounts.txt.summary", header=TRUE, row.names=1)
+# Subset the data to only include the desired rows
+fc_summary_subset <- fc_summary[c("Assigned", "Unassigned_Ambiguity", "Unassigned_NoFeatures"),]
+fc_summary_subset_t <- data.frame(t(fc_summary_subset))
+
+class_samples <- rep(c(66:75), 3)
+category <- c(rep("Assigned", 10), rep("Unassigned Ambiguity", 10), rep("Unassigned No Features", 10))
+
+# Create a new data frame with the desired order of categories
+data <- data.frame(
+  Sample = ifelse(class_samples <= 70, paste0("healthy_", class_samples), paste0("diseased_", class_samples)),
+  Category = category,
+  Count = c(fc_summary_subset_t$Assigned, 
+            fc_summary_subset_t$Unassigned_Ambiguity, 
+            fc_summary_subset_t$Unassigned_NoFeatures)
+)
+
+# Plot the data using ggplot2
+ggplot(data, aes(x = Sample, y = Count, fill = Category)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  xlab("Sample") +
+  ylab("Count") +
+  ggtitle("Assigned and Unassigned Reads by Sample") +
+  theme_bw() +
+  coord_flip() #rotate 90 degrees
+```
+As one can see, the plot details how the bulk of reads are assigned and shows the data is ready for downstream analysis. Note that the data above is labeled according to if they are the isogenic control (healthy) or if they exhibit the A79V mutation (diseased). The integer values following each healthy and diseased value correspond to the last two digits of their SRA accession number as they all contain the same first 10 values (i.e. SRR211907__).
+
+# DESeq2 Object Setup
+
+After performing this preliminary analysis, I loaded in the `featureCounts` table using `readcounts` and proceeded to manipulate the read count table. Such that it matches the parameters outlined above. I also made a few more tweaks such that gene IDs should be stored as row names and columns without read counts should be excluded. Finally, I created a new dataframe `sample_info` with the readcounts data and create the `colData` condition to keep track of the condition (healthy or diseased). 
+
+```{r readcounts, echo=TRUE}
+# Load the featureCounts output file
+folder <- "~/Desktop/featurecounts_result/" # download count table!
+readcounts <- read.table(paste0(folder, "featureCounts.txt"), header = TRUE)
+str(readcounts)
+orig_names <- names(readcounts) # keep a back-up copy of the original names
+
+#Rename to disease condition followed by patient number (last two digits of accession no. SRR211907__)
+names(readcounts) <- c(names(readcounts)[1:6],
+paste("healthy", c(66:70), sep = "_"),
+paste("diseased", c(71:75), sep = "_") ) # less potential for typos
+names(readcounts)
+
+## gene IDs should be stored as row.names
+row.names(readcounts) <- make.names(readcounts$Geneid)
+readcounts <- readcounts[ , -c(1:6)]
+
+sample_info <- data.frame(condition = gsub("_[0-9]+", "", names(readcounts)),
+row.names = names(readcounts) )
+
+write.table(readcounts, file = "readcounts.txt", sep = "\t", row.names = TRUE, col.names = TRUE)
+```
+
+This data frame can then be used to generate the `DESeqDataSet` by loading in the readcounts, as a matrix, the colData (`sample_info`), and the `design = ~ condition`. This effectively creates our `DESeq.ds` object that will be implemented down the line. I then removed genes without reads and saw the number of genes decreased from 59251 to 37309 (see below). We can also note that there are now fewer features stored within the DESeq.ds object. 
+
+
+```{r DESeq, warning=FALSE, echo=TRUE}
+DESeq.ds <- DESeqDataSetFromMatrix(countData = as.matrix(readcounts), colData = sample_info, design = ~ condition)
+
+# Create the DESeq object
+DESeq.ds <- DESeqDataSetFromMatrix(countData = as.matrix(readcounts),
+                                   colData = sample_info,
+                                   design = ~ condition)
+
+
+#Remove genes with no reads
+cat("Number of Genes Before:", dim(DESeq.ds))
+keep_genes <- rowSums(counts(DESeq.ds)) > 0
+DESeq.ds <- DESeq.ds[ keep_genes, ]
+cat("\nNumber of Genes After:", dim(DESeq.ds))
+```
+
+# VII. Normalizing for sequencing depth and RNA composition differences
+
+Now, normalization procedures for sequencing depth and RNA composition differences can be undertaken. The `estimateSizeFactors()` function is used for sequencing depth normalization and adds the size factors to the DESeq.ds object. Normalization can be visualized in log2(read counts) boxplots as is seen in Figure 3.
+
+```{r fig3, fig.cap = "**Figure 3:** *Size Factor Normalization*", fig.align = "center"}
+# Calculate size factors and add them to object
+DESeq.ds <- estimateSizeFactors(DESeq.ds)
+# Transform the normalized read counts to bring them onto similar scales
+par(mfrow=c(1,2)) # to plot the two box plots next to each other
+# Boxplot of non-normalized
+boxplot(log2(counts(DESeq.ds) +1), notch=TRUE,
+        main = "Non-normalized read count",
+        ylab ="log2(read counts)", cex = .6, las = 2)
+# Boxplot of size-factor normalized values
+boxplot(log2(counts(DESeq.ds, normalized=TRUE) +1), notch=TRUE,
+        main = "Size-factor-normalized read count",
+        ylab ="log2(read counts)", cex = .6, las = 2)
+```
+
+
+# Accounting for Heteroskedasticity and Large Dynamic Range
+
+We can then further process the data. First a pair of healthy and a pair of diseased individuals are visualized by comparing their log normalized counts against one other, (refer to Figure 4) wherein each dot is one gene, and we can note that the points fan out towards the lower left corner. This means that lower read counts correlate worse between replicates. This means that the standard deviation of the expression levels likely depends on the mean. 
+
+```{r fig4, fig.cap = "**Figure 4:** *Healthy vs. Diseased Pairs*", fig.align = "center"}
+## non-normalized read counts plus pseudocount
+log.counts <- log2(counts(DESeq.ds, normalized = FALSE) + 1)
+
+## instead of creating a new object, we could assign the values to a distinct matrix 
+## within the DESeq.ds object
+assay(DESeq.ds, "log.counts") <- log2(counts(DESeq.ds, normalized = FALSE) + 1)
+## normalized read counts
+assay(DESeq.ds, "log.norm.counts") <- log2(counts(DESeq.ds, normalized=TRUE) + 1)
+par(mfrow=c(1,2))
+DESeq.ds[, c("healthy_66","healthy_67")] %>%
+  assay(.,  "log.norm.counts") %>%
+  plot(., cex=.1, main = "Healthy #66 vs. Healthy #67")
+DESeq.ds[, c("diseased_74","diseased_75")] %>%
+  assay(.,  "log.norm.counts") %>%
+  plot(., cex=.1, main = "Diseased #74 vs Diseased #75")
+```
+
+This can be better visualized through a `meanSdPlot` (see Figure 5) where the red line shows the running median estimator and it should be horizontal to indicate that there is no variance-mean dependence. As we can observe in the plot, we see that the data exhibits heteroskedasticity (i.e. there is some variance-mean dependence for genes with low read counts). In order to continue with the analysis, as many tools assume homoskedastic data, we must rectify this. 
+```{r fig5, fig.cap = "**Figure 5:** *meanSdPlot*", fig.align = "center"}
+#BiocManager::install("vsn")
+## generate the base meanSdPlot using sequencing depth normalized log2(read counts) ## set up plotting frame
+par(mfrow=c(1,1))
+## generate the plot
+msd_plot <- vsn::meanSdPlot(assay(DESeq.ds, "log.norm.counts"), ranks=FALSE, # show the data on the original scale
+plot = FALSE)
+## since vsn::meanSdPlot generates a ggplot2 object, this can be manipulated in the usual ways
+msd_plot$gg +
+  ggtitle("Sequencing depth normalized log2(read counts)") +
+  ylab("standard deviation")
+```
+To reduce the dependence of the variance on the mean we can use `rlog` and `varianceStabilizingTransformation (vst)`. This yields a much more horizontal line and greatly reduces heteroskedasticity (see Figure 6). The objects created were stored on the disk for future analysis via `save.image()`.
+
+
+```{r fig6, fig.cap = "**Figure 6:** *meanSdPlot after Correction*", fig.align = "center"}
+DESeq.rlog <- rlog(DESeq.ds, blind = TRUE)
+rlog.norm.counts <- assay(DESeq.rlog)
+## rlog-transformed read counts
+msd_plot <- vsn::meanSdPlot(assay(DESeq.rlog), ranks=FALSE, plot = FALSE)
+msd_plot$gg + ggtitle("Following rlog transformation") +
+  coord_cartesian(ylim = c(0,3))
+#save.image(file = "~/Desktop/RNA_data.RData")
+
+```
+At the end of this procedure, we have expression values that are adjusted for differences in sequencing depth, differences in RNA composition, heteroskadasticity, and large dynamic range. 
+
+# IX. Performing Differential Gene Expression Analysis
+
+First, I made sure that my control condition (i.e. healthy) would be used as the baseline expression condition within the condition factor. I then began on running the DE analysis by first normalizing for differences in sequencing depth and abundance per sample, using gene-wise dispersion estimates across all sampoles, and fitting a negative binomial GLM and computing the Wald statistic for each gene through the following command `DESeq.ds %<>% DESeq()`. This makes the DESeq object have more entries in rowData. 
+
+```{r DGE, echo=TRUE}
+#FILE_DSD="~/Desktop/RNA_data.RData"
+#load(FILE_DSD)
+DESeq.ds$condition #baseline check, make sure control in right place
+design(DESeq.ds)
+DESeq.ds %<>% DESeq()
+DESeq.ds
+rowData(DESeq.ds) %>% colnames
+```
+
+Now, we can adjust for multiple hypothesis testing with independent filtering using. First, I visualized the raw distribution of p-values (see Figure 7) yielded in the rowData of the DESeq object under `WaldPvalue_condition_healthy_vs_diseased`. 
+```{r fig7, fig.cap = "**Figure 7:** *Raw p-values for Healthy vs Diseased*", fig.align = "center"}
+rowData(DESeq.ds)$WaldPvalue_condition_healthy_vs_diseased %>%
+    hist(breaks=19, main="Raw p-values for Healthy vs Diseased")
+```
+This can then be filtered using an alpha cutoff of 0.05 with `independentFiltering` to find the optimal expression cutoff to maximize the absolute number of genes that pass through the adjusted p-value threshold. After normalization we see a reduction in the outlier terms and a more even distribution.
+```{r fig8, fig.cap = "**Figure 8:** *Adjusted p-values for Healthy vs Diseased*", fig.align = "center"}
+DGE.results <- results(DESeq.ds, independentFiltering = TRUE, alpha = 0.05)
+DGE.results$padj %>%
+    hist(breaks=19, main="Adjusted p-values for Healthy vs Diseased")
+```
+
+Shrinkage is performed on the logFC estimates for lowly and noisily expressed genes towards zero, thus reducing their importance for any subsequent  analyses downstream. 
+```{r shrinkage, echo=TRUE}
+#BiocManager::install("apeglm")
+DGE.results <- lfcShrink(DESeq.ds, coef=2, type="apeglm")
+# Use coef = 2 because second coefficient of resultsNames(DESeq.ds) is condition_healthy_vs_diseasedso expression of the genes will be based on these conditions
+```
+
+
+Now, I can sort my DGE.results to obtain some of the top hits with the lowest padj values. We can see by looking at the first 6 genes, some of them are relevant to our study. Figure9 shows the Mitochondrial Nuclear Retrograde Regulator 1 (CHCHD2), the X-inactive specific transcript (XIST), and ITGA8 which is important in cytoskeletal organization and cellular adhesion were all found the be relevant in the Corsi et al. paper that this data was downloaded from (further analysis to be done in the Results section). 
+
+```{r top_degs, echo=TRUE}
+DGE.results.sorted <- DGE.results %>% `[`(order(.$padj),)
+head(DGE.results.sorted)
+```
+
+```{r fig9, fig.cap = "**Figure 9:** *plotCounts for Differentially Expressed Genes*", fig.align = "center"}
+par(mfrow=c(1,3))
+plotCounts(DESeq.ds, gene="CHCHD2", normalized = TRUE, xlab="")
+plotCounts(DESeq.ds, gene="XIST", normalized = TRUE, xlab="")
+plotCounts(DESeq.ds, gene="ITGA8", normalized = TRUE, xlab="")
+```
+
+Now, a Heatmap can be created to show differential expression for numerous genes at once. In Figure 10, the darker red color shows higher gene expression values whilst the lighter colors show lower gene expression values which are sorted by the p-value. 
+
+```{r fig10, fig.cap = "**Figure 10:** *Heatmap (No Scaling)*", fig.align = "center"}
+# identify genes with the desired adjusted p-value cut-off
+DGEgenes <- rownames(subset(DGE.results.sorted, padj < 0.05)) # extract rlog-transformed values into a matrix
+rlog.dge <- DESeq.rlog[DGEgenes,] %>% assay
+# heatmap of DEG sorted by p.adjust
+pheatmap(rlog.dge, scale="none",
+         show_rownames=FALSE, main="DGE (no scaling)",
+         color=colorRampPalette(RColorBrewer::brewer.pal(n=7, name="Reds"))(100)
+)
+```
+
+
+In Figure 11 the red color shows high expression values while the blue color shows low expression values with white acting as the median. This values are row normalized (z-score). The intensity of the color indicates gene expression level where each row represents a gene and each column a sample.
+
+```{r fig11, fig.cap = "**Figure 11:** *Heatmap of DGE(row-based z-score)*", fig.align = "center"}
+pheatmap(rlog.dge, scale="row",
+         show_rownames=FALSE, main="DGE (row-based z-score)")
+```
+
+Now, an MA plot can be made to get a global view of the differential genes (Figure 11). Each blue point is a gene that passes the significance threshold (padj < 0.05). Since the y-axis shows the log 2 full change between healthy vs. diseased expression, we can note that as we peruse up or down the y-axis we will see genes that are more differentially expressed between the two. We can also see from the results that there are more differentially expressed genes as the mean normalized counts increases (i.e. more strongly expressed genes). 
+
+```{r fig12, fig.cap = "**Figure 12:** *MA plot*", fig.align = "center"}
+plotMA(DGE.results, alpha=0.05,
+      main="Test: p.adj.value < 0.05", ylim = c(-8,8))
+```
+
+We can also make a volcano plot which also serves to provide a visual representation of the differential expression analysis results. We see the log2 full change on the x axis and the -log(p) values on the y axis. This means that the values in the top right and top left of the plot are of most interest as they exhibit a higher fold change and low p value, making them differentially expressed genes of interest. 
+
+```{r fig13, fig.cap = "**Figure 13:** *Volcano Plot*", fig.align = "center"}
+
+vp1 <- EnhancedVolcano(DGE.results,
+                       lab=rownames(DGE.results),
+                      x='log2FoldChange', y='padj',
+                      pCutoff=0.05,
+                      title="Healthy / Diseased")
+print(vp1)
+```
+
+Now, PCA can be performed. This was done by implementing the `plotPCA` function and grouping by `condition`, I also made sure to take the log base 2 (e.g. rlog) of DESeq and set `blind` to `FALSE` as downstream analysis needs to be undertaken []. (Reference: https://www.rdocumentation.org/packages/DESeq2/versions/1.12.3/topics/rlog) The results of PCA can be interpreted as each point is a sample, we see that 88% of the variance is due to PC1 and it accounts for most of the variation while 10% of the variance is due to PC2, more on this in the Results section.
+
+```{r fig14, fig.cap = "**Figure 14:** *PCA*", fig.align = "center"}
+plotPCA(rlog(DESeq.ds, blind = FALSE), intgroup=c("condition"))
+```
+
+
+Finally, GSEA must be performed. To do this, I will be implementing ClusterProfiler's `enrichGO` function. This was done by running DESeq2 analysis and extracting differentially expressed genes subject to padj < 0.05 and a two fold change in effect size. I kept the default p and q value cutoffs of 0.01 and 0.05, respectively
+
+The GO enrichments were done for all categories: Biological Process (BP), Molecular Function (MF) and Cellular Component (CC). 
+
+```{r Initialize_ClusterProfiler, echo=TRUE}
+# Load the required libraries
+library(clusterProfiler)
+library(org.Hs.eg.db) # or the appropriate organism database
+
+# Run DESeq2 analysis and extract differentially expressed genes
+DESeq.ds <- DESeq(DESeq.ds)
+DGE.results <- results(DESeq.ds, independentFiltering = TRUE, alpha = 0.05)
+num_genes <- length(rownames(subset(DGE.results, padj < 0.05 & abs(log2FoldChange) >= 1.0))) # 1.0 for twofold
+write.table(DGE.results, file = "DGE_Table.txt", row.names = TRUE, col.names = TRUE)
+cat("Total Number of Differentially Expressed Genes with Padj < 0.05 and Two-Fold Change:\n", num_genes, "\n")
+DGE.genes <- rownames(subset(DGE.results, padj < 0.05 & abs(log2FoldChange) >= 2.0)) # 1.0 for twofold
+cat("Subset of Genes for GO Enrichment:\n", length(DGE.genes))
+#head(DGE.genes)
+# Convert differentially expressed genes to a vector
+gene.vector <- row.names(DGE.results) %in% DGE.genes %>% as.integer #can be sorted
+names(gene.vector) <- row.names(DGE.results) #can be sorted
+```
+
+```{r enrichGO, echo=TRUE}
+go_enrichment_BP <- enrichGO(gene = names(which(gene.vector == 1)), 
+                             'org.Hs.eg.db', 
+                             keyType = "SYMBOL", 
+                             ont = "BP", 
+                             pvalueCutoff = 0.01,
+                             qvalueCutoff = 0.05)
+cat("Top 6 enrichment pathways for BP\n")
+head(go_enrichment_BP@result$Description)
+cat("\n")
+go_enrichment_CC <- enrichGO(gene = names(which(gene.vector == 1)), 
+                             'org.Hs.eg.db', 
+                             keyType = "SYMBOL", 
+                             ont = "CC", 
+                             pvalueCutoff = 0.01,
+                             qvalueCutoff = 0.05)
+cat("Top 6 enrichment pathways for CC\n")
+head(go_enrichment_CC@result$Description)
+cat("\n")
+
+go_enrichment_MF <- enrichGO(gene = names(which(gene.vector == 1)), 
+                             'org.Hs.eg.db', 
+                             keyType = "SYMBOL", 
+                             ont = "MF", 
+                             pvalueCutoff = 0.01,
+                             qvalueCutoff = 0.05)
+cat("Top 6 enrichment pathways for MF\n")
+head(go_enrichment_MF@result$Description)
+cat("\n")
+
+
+write.table(head(go_enrichment_BP@result$Description), file = "BP_enrichment.txt", sep = "\t")
+write.table(head(go_enrichment_CC@result$Description), file = "CC_enrichment.txt", sep = "\t")
+write.table(head(go_enrichment_MF@result$Description), file = "MF_enrichment.txt", sep = "\t")
+
+```

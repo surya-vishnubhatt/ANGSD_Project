@@ -1,0 +1,7 @@
+"x"
+"1"	"collagen-containing extracellular matrix"
+"2"	"collagen trimer"
+"3"	"endoplasmic reticulum lumen"
+"4"	"basement membrane"
+"5"	"external side of plasma membrane"
+"6"	"complex of collagen trimers"
