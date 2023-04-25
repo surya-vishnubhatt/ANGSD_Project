@@ -1,0 +1,11 @@
+name: qorts
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.9
+  - r-base=4.0
+  - openjdk=17
+  - qorts=1.3.6
+  - r-qorts=1.3.6
+prefix: /athena/angsd/scratch/mef3005/share/envs/qorts
