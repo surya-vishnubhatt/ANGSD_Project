@@ -1,0 +1,15 @@
+Status	/athena/angsd/scratch/spv4002/SRR21190766/SRR21190766.Aligned.sortedByCoord.out.bam	/athena/angsd/scratch/spv4002/SRR21190767/SRR21190767.Aligned.sortedByCoord.out.bam	/athena/angsd/scratch/spv4002/SRR21190768/SRR21190768.Aligned.sortedByCoord.out.bam	/athena/angsd/scratch/spv4002/SRR21190769/SRR21190769.Aligned.sortedByCoord.out.bam	/athena/angsd/scratch/spv4002/SRR21190770/SRR21190770.Aligned.sortedByCoord.out.bam	/athena/angsd/scratch/spv4002/SRR21190771/SRR21190771.Aligned.sortedByCoord.out.bam	/athena/angsd/scratch/spv4002/SRR21190772/SRR21190772.Aligned.sortedByCoord.out.bam	/athena/angsd/scratch/spv4002/SRR21190773/SRR21190773.Aligned.sortedByCoord.out.bam	/athena/angsd/scratch/spv4002/SRR21190774/SRR21190774.Aligned.sortedByCoord.out.bam	/athena/angsd/scratch/spv4002/SRR21190775/SRR21190775.Aligned.sortedByCoord.out.bam
+Assigned	31456788	28752045	30218402	29104105	23633943	25603735	24659389	22609704	27477509	28938260
+Unassigned_Unmapped	0	0	0	0	0	0	0	0	0	0
+Unassigned_Read_Type	0	0	0	0	0	0	0	0	0	0
+Unassigned_Singleton	0	0	0	0	0	0	0	0	0	0
+Unassigned_MappingQuality	0	0	0	0	0	0	0	0	0	0
+Unassigned_Chimera	0	0	0	0	0	0	0	0	0	0
+Unassigned_FragmentLength	0	0	0	0	0	0	0	0	0	0
+Unassigned_Duplicate	0	0	0	0	0	0	0	0	0	0
+Unassigned_MultiMapping	6492457	5596399	5699270	5288127	5334339	5004752	4816246	4503039	5300879	5643411
+Unassigned_Secondary	0	0	0	0	0	0	0	0	0	0
+Unassigned_NonSplit	0	0	0	0	0	0	0	0	0	0
+Unassigned_NoFeatures	2708914	2681395	1887418	2450450	1877995	2242666	2602322	2267070	2749831	2924582
+Unassigned_Overlapping_Length	0	0	0	0	0	0	0	0	0	0
+Unassigned_Ambiguity	457142	419212	422601	426322	358569	362681	363547	333962	406531	415154
